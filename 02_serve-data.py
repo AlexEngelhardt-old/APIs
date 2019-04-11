@@ -1,4 +1,7 @@
 """This API returns a list of people defined in an external CSV file
+
+Adapted and simplified (a lot) from:
+https://www.codementor.io/sagaragarwal94/building-a-basic-restful-api-in-python-58k02xsiq
 """
 
 from flask import Flask
