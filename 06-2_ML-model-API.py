@@ -10,22 +10,26 @@ import sng
 from flask import Flask
 from flask_restful import Resource, Api
 from flask_jsonpify import jsonify
+from keras import backend as K
 
 
 app = Flask("api05")
 api = Api(app)
 
-gen = sng.Generator.load('model')
-
 
 class Suggester(Resource):
-    def get(self):
-        name = gen.simulate(n=1)[0]
-        return jsonify(name)
+    def get(self, n=1):
+        gen = sng.Generator.load('model')
+        names = gen.simulate(n=5)
+
+        # If you don't clear_session, the model will get confused and raise
+        # an error:
+        # https://github.com/tensorflow/tensorflow/issues/14356#issuecomment-389606499
+        K.clear_session()
+
+        return jsonify(names)
 
 
 api.add_resource(Suggester, '/suggest')
 
-app.run(port='5005')
-
-
+app.run(port='5006')
