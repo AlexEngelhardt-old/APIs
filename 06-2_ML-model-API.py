@@ -19,6 +19,9 @@ api = Api(app)
 
 class Suggester(Resource):
     def get(self, n=1):
+        # I don't like that we have to load the model every time
+        # in the function, instead of once in the 'main' part.
+        # But the script fails if I do that - I don't yet know why.
         gen = sng.Generator.load('model')
         names = gen.simulate(n=5)
 
@@ -28,7 +31,6 @@ class Suggester(Resource):
         K.clear_session()
 
         return jsonify(names)
-
 
 api.add_resource(Suggester, '/suggest')
 
